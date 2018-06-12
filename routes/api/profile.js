@@ -29,4 +29,25 @@ router.get('/', passport.authenticate('jwt', { session:false }), (req, res) => {
     .catch(err => res.status(404).json(err))
 })
 
+// @route POST api/profile/
+// @desc  Create user profile
+// @access Private
+router.post('/', passport.authenticate('jwt', { session:false }), (req, res) => {
+
+  const profileFields = {};
+  profileFields.user = req.user.id;
+  if(req.body.handle) profileFields.handle = req.body.handle;
+  if(req.body.company) profileFields.company = req.body.company;
+  if(req.body.website) profileFields.website = req.body.website;
+  if(req.body.location) profileFields.location = req.body.location;
+  if(req.body.status) profileFields.status = req.body.status;
+  if(req.body.bio) profileFields.bio = req.body.bio;
+  if(req.body.githubusername) profileFields.githubusername = req.body.githubusername;
+  if(req.body.handle) profileFields.handle = req.body.handle;
+  if(req.body.handle) profileFields.handle = req.body.handle;
+  if(req.body.handle) profileFields.handle = req.body.handle;
+  if(req.body.handle) profileFields.handle = req.body.handle;
+
+})
+
 module.exports = router;
