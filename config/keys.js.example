@@ -1,0 +1,4 @@
+module.exports = {
+  mongoURI: 'mongodb://x:x@x.mlab.com:x/x',
+  secret: 'secret'
+}
