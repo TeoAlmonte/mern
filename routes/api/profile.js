@@ -30,7 +30,7 @@ router.get('/', passport.authenticate('jwt', { session:false }), (req, res) => {
 })
 
 // @route POST api/profile/
-// @desc  Create user profile
+// @desc  Create or Edit user profile
 // @access Private
 router.post('/', passport.authenticate('jwt', { session:false }), (req, res) => {
 
@@ -43,11 +43,35 @@ router.post('/', passport.authenticate('jwt', { session:false }), (req, res) => 
   if(req.body.status) profileFields.status = req.body.status;
   if(req.body.bio) profileFields.bio = req.body.bio;
   if(req.body.githubusername) profileFields.githubusername = req.body.githubusername;
-  if(req.body.handle) profileFields.handle = req.body.handle;
-  if(req.body.handle) profileFields.handle = req.body.handle;
-  if(req.body.handle) profileFields.handle = req.body.handle;
-  if(req.body.handle) profileFields.handle = req.body.handle;
 
+  if(typeof req.body.skills !== 'undefined') {
+    profileFields.skills = req.body.skills.split(',');
+  }
+
+  profileFields.social = {};
+  if(req.body.youtube) profileFields.social.youtube = req.body.youtube
+  if(req.body.twitter) profileFields.social.twitter = req.body.twitter
+  if(req.body.facebook) profileFields.social.facebook = req.body.facebook
+  if(req.body.linkedin) profileFields.social.linkedin = req.body.linkedin
+  if(req.body.instagram) profileFields.social.instagram = req.body.instagram
+
+  Profile.findOne({ user: req.user.id })
+   .then(profile => {
+     if(profile) {
+       Profile.findOneAndUpdate(
+         {user: req.user.id},
+         {$set: profileFields},
+         {new: true}
+       ).then(profile => res.json(profile))
+     } else {
+       Profile.findOne({handle: profileFields.handle}).then(profile => {
+         if(profile) {
+           res.status(404).json('handle exsists')
+         }
+         new Profile(profileFields).save().then(profile => res.json(profile))
+       })
+     }
+   })
 })
 
 module.exports = router;
