@@ -16,6 +16,24 @@ const User = require('../../models/User')
 // @access Public
 router.get('/test', (req, res) => res.json({ msg: `Working` }))
 
+// @route  GET api/users/all
+// @desc   Get all users
+// @access Public
+router.get('/all', (req, res) => {
+  const errors = {};
+
+  User.find()
+    .then(users => {
+      if(!users) {
+        errors.nouser = 'no users';
+        res.status(404).json(errors)
+      }
+      res.json(users)
+    })
+    .catch(err => res.status(404).json(err))
+
+})
+
 // @route  Post api/users/register
 // @desc   Register a user
 // @access Public
