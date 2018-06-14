@@ -4,14 +4,14 @@ const isEmpty = require('./is-empty');
 module.exports = function validatePostInput(data) {
   let errors = {};
 
-  data.body = !isEmpty(data.body) ? data.body : '';
+  data.text = !isEmpty(data.text) ? data.text : '';
 
-  if(!Validator.isLength(data.body, { min: 10, max: 300})) {
-    errors.body = 'comment must be 10-300 chars';
+  if(!Validator.isLength(data.text, { min: 10, max: 300})) {
+    errors.text = 'comment must be 10-300 chars';
   }
 
-  if(Validator.isEmpty(data.body)) {
-    errors.body = 'body is req'
+  if(Validator.isEmpty(data.text)) {
+    errors.text = 'body is req'
   }
 
   return {
